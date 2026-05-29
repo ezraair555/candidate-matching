@@ -1,0 +1,303 @@
+---
+title: "Installation Guide"
+---
+
+## Detailed Installation
+
+Complete guide for deploying Candidate Matcher from scratch.
+
+---
+
+## Architecture Overview
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│  DuckDB (Local) │────▶│  ETL Script      │────▶│  GitHub Pages   │
+│  - jobs         │     │  (Weekly Cron)   │     │  (Static Site)  │
+│  - candidates   │     │                  │     │                 │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+                                                       │
+                                                       ▼
+                                                ┌─────────────────┐
+                                                │  User Browser   │
+                                                │  - Matching     │
+                                                │  - localStorage │
+                                                └─────────────────┘
+```
+
+---
+
+## System Requirements
+
+### For Deployment (One-time setup)
+- Python 3.8+
+- Git
+- GitHub account
+- DuckDB database (optional, sample data included)
+
+### For Users
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+- JavaScript enabled
+- localStorage allowed
+
+---
+
+## Step-by-Step Installation
+
+### 1. Install Dependencies
+
+```bash
+# Install Python dependencies
+pip install duckdb pandas
+
+# Verify installation
+python3 --version
+pip list | grep duckdb
+```
+
+### 2. Clone Repository
+
+```bash
+git clone https://github.com/ezraair555/candidate-matching.git
+cd candidate-matching
+```
+
+### 3. Prepare Database
+
+#### Option A: Use Sample Data
+
+```bash
+# Sample data already included
+ls -la sample.db  # Should exist
+```
+
+#### Option B: Create Your Database
+
+Use the schema from [schema.qmd](schema.qmd):
+
+```sql
+-- Create jobs table
+CREATE TABLE jobs (
+    job_id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    company TEXT,
+    location TEXT,
+    employment_type TEXT,
+    experience_level TEXT,
+    required_skills TEXT[],
+    preferred_skills TEXT[],
+    salary_min DECIMAL,
+    salary_max DECIMAL,
+    status TEXT DEFAULT 'active'
+);
+
+-- Create candidates table
+CREATE TABLE candidates (
+    candidate_id INTEGER PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT,
+    current_title TEXT,
+    current_company TEXT,
+    years_experience INTEGER,
+    experience_level TEXT,
+    skills TEXT[],
+    availability TEXT
+);
+```
+
+#### Option C: Generate Sample Data
+
+```bash
+python3 sample_data_generator.py
+# Follow prompts to create test database
+```
+
+### 4. Export Data to JSON
+
+```bash
+python3 export_to_json.py \
+    --duckdb-path /path/to/database.db \
+    --github-repo .
+```
+
+Expected output:
+```
+✓ Exported 20 records from jobs → jobs.json
+✓ Exported 50 records from candidates → candidates.json
+✅ Export complete!
+```
+
+### 5. Initialize Git Repository
+
+```bash
+git init
+git checkout -b main
+git add .
+git commit -m "Initial commit: Candidate Matcher"
+```
+
+### 6. Create GitHub Repository
+
+#### Via GitHub CLI (Fastest)
+
+```bash
+# Install gh if not installed
+# https://cli.github.com/
+
+# Authenticate
+gh auth login
+
+# Create private repo
+gh repo create candidate-matching --private --source=. --push
+
+# Or create public repo
+gh repo create candidate-matching --public --source=. --push
+```
+
+#### Via Web Interface
+
+1. Go to https://github.com/new
+2. Repository name: `candidate-matching`
+3. Choose Public or Private
+4. **Do NOT** initialize with README
+5. Click **Create repository**
+6. Follow commands shown to push existing code
+
+### 7. Push to GitHub
+
+```bash
+# If not done automatically
+git remote add origin https://github.com/YOUR_USERNAME/candidate-matching.git
+git push -u origin main
+```
+
+### 8. Enable GitHub Pages
+
+1. Go to repo Settings → Pages
+2. Source: Deploy from branch
+3. Branch: main, Folder: /
+4. Click **Save**
+5. Wait 1-2 minutes
+
+Your site is live at: `https://YOUR_USERNAME.github.io/candidate-matching/`
+
+---
+
+## Automated Weekly Refresh
+
+### Set Up Cron Job
+
+```bash
+crontab -e
+```
+
+Add this line:
+
+```bash
+0 6 * * 1 cd /home/lucas/.openclaw/workspace/candidate_matching && \
+    python3 export_to_json.py \
+        --duckdb-path /path/to/your/sigma_analytics.db \
+        --github-repo . && \
+    git add jobs.json candidates.json data_refresh_timestamp.json && \
+    git commit -m "Weekly data refresh: $(date +\%Y-\%m-\%d)" && \
+    git push origin main >> /tmp/candidate_cron.log 2>&1
+```
+
+### Test Cron Job
+
+```bash
+# Run manually first
+/path/to/export_to_json.py --duckdb-path /path/to/db.db --github-repo .
+
+# Check cron logs
+grep CRON /var/log/syslog | tail -20
+```
+
+---
+
+## Customization
+
+### Change Theme Colors
+
+Edit `styles.css`:
+
+```css
+:root {
+    --primary: #0066cc;        /* Main blue */
+    --primary-dark: #004c99;   /* Darker blue */
+    --primary-light: #e6f0ff;  /* Light blue */
+}
+```
+
+### Adjust Matching Weights
+
+Edit `app.js`, find `calculateMatchScore()`:
+
+```javascript
+scores.overall_score = Math.round(
+    (scores.skills_match_score * 0.40) +    // Change this
+    (scores.experience_match_score * 0.25) + // Change this
+    (scores.level_match_score * 0.15) +
+    (scores.location_match_score * 0.10) +
+    (scores.salary_match_score * 0.10)
+);
+```
+
+### Add Custom Logo
+
+Edit `index.html`:
+
+```html
+<div class="logo">
+    <img src="your-logo.png" alt="Company Logo" height="40">
+</div>
+```
+
+---
+
+## Security Considerations
+
+### For Private Repos
+
+- GitHub Free: No Pages support for private repos
+- GitHub Pro ($4/mo): Private repos with Pages ✅
+- Alternative: Use Netlify or Vercel for private hosting
+
+### Data Privacy
+
+- Job/candidate data: Public if repo is public
+- Notes: Stored locally in browser (never on server)
+- No authentication: Anyone with URL can access (if public)
+
+### Best Practices
+
+1. Use private repo for sensitive data
+2. Strip PII before export (email, phone)
+3. Use HTTPS (automatic with GitHub Pages)
+4. Regular backups of notes (export CSV weekly)
+
+---
+
+## Verification Checklist
+
+- [ ] JSON files exported successfully
+- [ ] Git repository initialized
+- [ ] Code pushed to GitHub
+- [ ] GitHub Pages enabled
+- [ ] Site loads without errors
+- [ ] Sample data displays correctly
+- [ ] Job selection works
+- [ ] Candidate matching works
+- [ ] Notes can be added and saved
+- [ ] Export to CSV/JSON works
+- [ ] Weekly cron job scheduled
+
+---
+
+## Next Steps
+
+- [Quick Start](quickstart.qmd) - If you skipped detailed steps
+- [User Guide](user-guide.qmd) - Learn all features
+- [Schema Reference](schema.qmd) - Database structure
+- [Troubleshooting](documentation.qmd#troubleshooting) - Common issues

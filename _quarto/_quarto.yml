@@ -1,0 +1,60 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Candidate Matcher"
+  description: "Professional candidate matching and tracking system"
+  favicon: favicon.ico
+  
+  navbar:
+    background: primary
+    search: false
+    left:
+      - href: index.qmd
+        text: Home
+      - href: app.qmd
+        text: Match Candidates
+      - href: notes.qmd
+        text: View Notes
+      - href: documentation.qmd
+        text: Documentation
+    
+    right:
+      - icon: github
+        href: https://github.com/ezraair555/candidate-matching
+        aria-label: GitHub Repository
+
+  sidebar:
+    - id: documentation
+      contents:
+        - section: "Getting Started"
+          contents:
+            - quickstart.qmd
+            - installation.qmd
+        - section: "User Guide"
+          contents:
+            - user-guide.qmd
+            - matching-algorithm.qmd
+            - notes-feature.qmd
+        - section: "Technical"
+          contents:
+            - schema.qmd
+            - data-export.qmd
+            - api-reference.qmd
+
+format:
+  html:
+    theme: 
+      - cosmo
+      - custom.scss
+    css: styles.css
+    toc: true
+    code-copy: true
+    code-overflow: scroll
+
+metadata-files:
+  - _sidebar.yml
+
+execute:
+  freeze: auto

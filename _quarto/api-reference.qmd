@@ -1,0 +1,514 @@
+---
+title: "API Reference"
+---
+
+## Developer Documentation
+
+For integrating with Candidate Matcher programmatically.
+
+---
+
+## localStorage API
+
+### Notes Storage
+
+**Key:** `candidate_matcher_notes`
+
+**Structure:**
+```typescript
+interface NotesData {
+  [candidateId: number]: Note[];
+}
+
+interface Note {
+  note_text: string;
+  rating: number;  // 0-5
+  created_at: string;  // ISO 8601
+  updated_at: string;  // ISO 8601
+}
+```
+
+### Read Notes
+
+```javascript
+// Get all notes
+const notes = JSON.parse(localStorage.getItem('candidate_matcher_notes'));
+
+// Get notes for specific candidate
+const candidateNotes = notes[123];
+
+// Iterate all notes
+for (const [candidateId, notes] of Object.entries(notes)) {
+  notes.forEach(note => {
+    console.log(`Candidate ${candidateId}: ${note.note_text}`);
+  });
+}
+```
+
+### Write Notes
+
+```javascript
+// Add a new note
+const notes = JSON.parse(localStorage.getItem('candidate_matcher_notes')) || {};
+
+if (!notes[candidateId]) {
+  notes[candidateId] = [];
+}
+
+notes[candidateId].push({
+  note_text: 'Your note here',
+  rating: 4,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString()
+});
+
+localStorage.setItem('candidate_matcher_notes', JSON.stringify(notes));
+```
+
+### Delete Notes
+
+```javascript
+// Delete all notes for a candidate
+delete notes[candidateId];
+localStorage.setItem('candidate_matcher_notes', JSON.stringify(notes));
+
+// Delete specific note (by index)
+notes[candidateId].splice(noteIndex, 1);
+localStorage.setItem('candidate_matcher_notes', JSON.stringify(notes));
+
+// Clear all notes
+localStorage.removeItem('candidate_matcher_notes');
+```
+
+---
+
+## Data Files
+
+### jobs.json
+
+**URL:** `https://YOUR_USERNAME.github.io/candidate-matching/jobs.json`
+
+**Schema:**
+```typescript
+interface Job {
+  job_id: number;
+  title: string;
+  company: string;
+  location: string;
+  employment_type: 'full-time' | 'part-time' | 'contract';
+  experience_level: 'entry' | 'mid' | 'senior' | 'executive';
+  salary_min: number;
+  salary_max: number;
+  required_skills: string[];
+  preferred_skills: string[];
+  status: 'active' | 'closed' | 'on-hold';
+  posted_date: string;
+  source: string;
+  external_url: string;
+  created_at: string;
+  updated_at: string;
+}
+```
+
+### candidates.json
+
+**URL:** `https://YOUR_USERNAME.github.io/candidate-matching/candidates.json`
+
+**Schema:**
+```typescript
+interface Candidate {
+  candidate_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  location: string;
+  current_title: string;
+  current_company: string;
+  years_experience: number;
+  experience_level: 'entry' | 'mid' | 'senior' | 'executive';
+  skills: string[];
+  education_level: string;
+  education_field: string;
+  availability: 'immediate' | '2-weeks' | '1-month' | 'not-looking';
+  salary_expectation_min: number;
+  salary_expectation_max: number;
+  resume_url: string;
+  linkedin_url: string;
+  portfolio_url: string;
+  source: string;
+  status: 'active' | 'placed' | 'archived';
+  created_at: string;
+  updated_at: string;
+}
+```
+
+### data_refresh_timestamp.json
+
+**URL:** `https://YOUR_USERNAME.github.io/candidate-matching/data_refresh_timestamp.json`
+
+**Schema:**
+```typescript
+interface RefreshTimestamp {
+  last_refresh: string;  // ISO 8601
+  timezone: string;
+  source_db: string;
+  tables_exported: string[];
+}
+```
+
+---
+
+## Fetching Data Programmatically
+
+### JavaScript Example
+
+```javascript
+async function loadData() {
+  const [jobs, candidates, timestamp] = await Promise.all([
+    fetch('jobs.json').then(r => r.json()),
+    fetch('candidates.json').then(r => r.json()),
+    fetch('data_refresh_timestamp.json').then(r => r.json())
+  ]);
+  
+  console.log(`Loaded ${jobs.length} jobs and ${candidates.length} candidates`);
+  console.log(`Last refresh: ${timestamp.last_refresh}`);
+  
+  return { jobs, candidates, timestamp };
+}
+```
+
+### Python Example
+
+```python
+import requests
+import json
+
+BASE_URL = "https://ezraair555.github.io/candidate-matching"
+
+# Fetch data
+jobs = requests.get(f"{BASE_URL}/jobs.json").json()
+candidates = requests.get(f"{BASE_URL}/candidates.json").json()
+timestamp = requests.get(f"{BASE_URL}/data_refresh_timestamp.json").json()
+
+print(f"Loaded {len(jobs)} jobs and {len(candidates)} candidates")
+print(f"Last refresh: {timestamp['last_refresh']}")
+
+# Save locally
+with open('jobs_local.json', 'w') as f:
+    json.dump(jobs, f, indent=2)
+```
+
+### R Example
+
+```r
+library(jsonlite)
+
+BASE_URL <- "https://ezraair555.github.io/candidate-matching"
+
+# Fetch data
+jobs <- fromJSON(paste0(BASE_URL, "/jobs.json"))
+candidates <- fromJSON(paste0(BASE_URL, "/candidates.json"))
+timestamp <- fromJSON(paste0(BASE_URL, "/data_refresh_timestamp.json"))
+
+cat(sprintf("Loaded %d jobs and %d candidates\n", 
+            nrow(jobs), nrow(candidates)))
+cat(sprintf("Last refresh: %s\n", timestamp$last_refresh))
+```
+
+---
+
+## Matching Algorithm API
+
+### Calculate Match Score
+
+The matching logic is in `app.js`, function `calculateMatchScore(candidate, job)`.
+
+**Formula:**
+```javascript
+overall_score = round(
+  (skills_score × 0.40) +
+  (experience_score × 0.25) +
+  (level_score × 0.15) +
+  (location_score × 0.10) +
+  (salary_score × 0.10)
+)
+```
+
+### Implement in Your Code
+
+**Python Implementation:**
+```python
+def calculate_match_score(candidate, job):
+    # Skills match (40%)
+    candidate_skills = set(candidate['skills'])
+    required_skills = set(job['required_skills'])
+    
+    if len(required_skills) > 0:
+        matched = len(candidate_skills & required_skills)
+        skills_score = (matched / len(required_skills)) * 100
+    else:
+        skills_score = 70
+    
+    # Experience match (25%)
+    level_map = {'entry': 1, 'mid': 2, 'senior': 3, 'executive': 4}
+    cand_level = level_map.get(candidate['experience_level'], 2)
+    job_level = level_map.get(job['experience_level'], 2)
+    
+    if cand_level >= job_level:
+        exp_score = 100
+    else:
+        exp_score = max(0, 100 - ((job_level - cand_level) * 30))
+    
+    # Level match (15%)
+    level_diff = abs(cand_level - job_level)
+    level_score = 100 if level_diff == 0 else (70 if level_diff == 1 else 40)
+    
+    # Location match (10%)
+    if 'remote' in job['location'].lower() or \
+       candidate['location'] == job['location']:
+        location_score = 100
+    else:
+        location_score = 60
+    
+    # Salary match (10%)
+    if candidate['salary_expectation_min'] <= job['salary_max']:
+        salary_score = 100
+    else:
+        salary_score = min(100, (job['salary_max'] / candidate['salary_expectation_min']) * 100)
+    
+    # Overall score
+    overall = round(
+        (skills_score * 0.40) +
+        (exp_score * 0.25) +
+        (level_score * 0.15) +
+        (location_score * 0.10) +
+        (salary_score * 0.10)
+    )
+    
+    return overall
+```
+
+---
+
+## Export Format
+
+### CSV Export Structure
+
+Columns in exported CSV:
+
+```
+Candidate ID,First Name,Last Name,Email,Current Title,Company,Location,Years Experience,Skills,Rating,Note,Created At
+```
+
+**Example:**
+```csv
+123,Jane,Doe,jane@email.com,Senior Engineer,TechCorp,"New York, NY",8,"Python;AWS;Docker",4,"Strong candidate...",2026-05-29T12:00:00Z
+```
+
+### JSON Export Structure
+
+```json
+{
+  "exported_at": "2026-05-29T12:00:00Z",
+  "selected_jobs": [1, 2, 3],
+  "candidates": [
+    {
+      "candidate_id": 123,
+      "first_name": "Jane",
+      "last_name": "Doe",
+      ...
+      "match_score": 85,
+      "matched_job_id": 1,
+      "notes": [
+        {
+          "note_text": "Strong candidate...",
+          "rating": 4,
+          "created_at": "2026-05-29T12:00:00Z"
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## Browser Console Utilities
+
+### Quick Commands
+
+Open browser DevTools (F12) → Console tab:
+
+```javascript
+// Count total notes
+const notes = JSON.parse(localStorage.getItem('candidate_matcher_notes'));
+console.log('Total notes:', Object.values(notes).flat().length);
+
+// Find candidates with 5-star ratings
+const rated = Object.entries(notes).flatMap(([id, ns]) => 
+  ns.filter(n => n.rating === 5).map(n => ({ id, ...n }))
+);
+console.table(rated);
+
+// Search notes by keyword
+const keyword = 'python';
+const matches = Object.entries(notes).flatMap(([id, ns]) =>
+  ns.filter(n => n.note_text.toLowerCase().includes(keyword))
+    .map(n => ({ candidate_id: id, ...n }))
+);
+console.table(matches);
+
+// Export notes manually
+const blob = new Blob([JSON.stringify(notes, null, 2)], {type: 'application/json'});
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `notes_backup_${new Date().toISOString().split('T')[0]}.json`;
+a.click();
+```
+
+---
+
+## Integration Examples
+
+### Slack Bot Integration
+
+```python
+import requests
+from slack_sdk import WebClient
+
+def post_top_matches_to_slack():
+    # Load data
+    candidates = requests.get('.../candidates.json').json()
+    jobs = requests.get('.../jobs.json').json()
+    
+    # Calculate matches (using your logic)
+    top_matches = get_top_matches(candidates, jobs, limit=5)
+    
+    # Post to Slack
+    client = WebClient(token='xoxb-your-token')
+    
+    for match in top_matches:
+        client.chat_postMessage(
+            channel='#hiring',
+            text=f"🎯 Top Match: {match['name']} ({match['score']}% match for {match['job']})"
+        )
+```
+
+### Email Digest
+
+```python
+import smtplib
+from email.mime.text import MIMEText
+
+def send_weekly_digest():
+    # Get new candidates since last week
+    new_candidates = get_new_candidates()
+    
+    # Create HTML email
+    html = f"""
+    <html>
+      <body>
+        <h1>Weekly Candidate Digest</h1>
+        <p>{len(new_candidates)} new candidates this week</p>
+        <!-- List top matches -->
+      </body>
+    </html>
+    """
+    
+    msg = MIMEText(html, 'html')
+    msg['Subject'] = 'Weekly Candidate Digest'
+    msg['From'] = 'recruiting@company.com'
+    msg['To'] = 'hiring-manager@company.com'
+    
+    # Send via SMTP
+    with smtplib.SMTP('smtp.company.com') as server:
+        server.send_message(msg)
+```
+
+### CRM Integration
+
+```python
+import duckdb
+
+def sync_to_crm():
+    # Export from DuckDB
+    conn = duckdb.connect('database.db')
+    candidates = conn.execute("SELECT * FROM candidates").fetchdf()
+    
+    # Transform for CRM
+    crm_records = []
+    for _, row in candidates.iterrows():
+        crm_records.append({
+            'FirstName': row['first_name'],
+            'LastName': row['last_name'],
+            'Email': row['email'],
+            'Skills': ', '.join(row['skills']),
+            'Experience__c': row['years_experience']
+        })
+    
+    # Upload to Salesforce/HubSpot/etc.
+    upload_to_crm(crm_records)
+```
+
+---
+
+## Rate Limits & Quotas
+
+### GitHub Pages
+
+- **Bandwidth:** 100GB/month (free tier)
+- **Builds:** No explicit limit
+- **Storage:** 1GB per repository
+- **Concurrent builds:** 1 at a time
+
+### localStorage
+
+- **Quota:** ~5-10MB per origin
+- **Notes capacity:** Thousands of notes (each ~200-500 bytes)
+- **No rate limits:** Synchronous access
+
+### Best Practices
+
+✅ Cache JSON data after first load  
+✅ Debounce note saves (not needed currently - instant save)  
+✅ Compress large exports  
+❌ Don't poll continuously (use events instead)  
+
+---
+
+## Security Considerations
+
+### CORS
+
+GitHub Pages enables CORS by default. You can fetch JSON from any origin:
+
+```javascript
+fetch('https://ezraair555.github.io/candidate-matching/jobs.json')
+  .then(r => r.json())
+  .then(data => console.log(data));
+```
+
+### Authentication
+
+Currently **no authentication** required:
+- Anyone with URL can access data
+- Notes are per-browser (not shared)
+- For private data, use private repo + authentication
+
+### Future: Add Authentication
+
+Options for securing access:
+1. **GitHub OAuth** - Require GitHub login
+2. **Auth0/Clerk** - Third-party auth service
+3. **Netlify Identity** - If hosting on Netlify
+4. **Basic Auth** - Simple username/password (via .htaccess on custom domain)
+
+---
+
+## Next Steps
+
+- [Schema Reference](schema.qmd) - Database structure
+- [Data Export](data-export.qmd) - Automated refresh
+- [Documentation](documentation.qmd) - Main docs index

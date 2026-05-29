@@ -1,0 +1,184 @@
+---
+title: "Quick Start Guide"
+---
+
+## 5-Minute Setup
+
+Get Candidate Matcher running in under 5 minutes.
+
+---
+
+## Prerequisites
+
+- GitHub account
+- DuckDB database with jobs/candidates (or use sample data)
+- Basic command line knowledge
+
+---
+
+## Step 1: Clone or Create Repository
+
+### Option A: Use Existing Repo (Fastest)
+
+The repository is already created:
+
+```bash
+git clone https://github.com/ezraair555/candidate-matching.git
+cd candidate-matching
+```
+
+### Option B: Create Your Own Fork
+
+1. Go to https://github.com/ezraair555/candidate-matching
+2. Click **Fork** to create your copy
+3. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/candidate-matching.git
+   ```
+
+---
+
+## Step 2: Enable GitHub Pages
+
+1. Go to your repo on GitHub
+2. Click **Settings** → **Pages** (left sidebar)
+3. Under "Build and deployment":
+   - **Source**: Deploy from a branch
+   - **Branch**: main
+   - **Folder**: / (root)
+4. Click **Save**
+5. Wait 1-2 minutes
+
+Your site will be at: `https://YOUR_USERNAME.github.io/candidate-matching/`
+
+---
+
+## Step 3: Test Locally (Optional)
+
+Before deploying, test locally:
+
+```bash
+# Start local server
+python3 -m http.server 8000
+
+# Open browser
+# http://localhost:8000
+```
+
+You should see the app with sample data loaded!
+
+---
+
+## Step 4: Connect Your Data
+
+### If Using Sample Data
+
+Sample data is already included (20 jobs, 50 candidates). Skip to Step 5.
+
+### If Using Your Own DuckDB
+
+1. **Verify schema** matches [schema.qmd](schema.qmd):
+   ```sql
+   -- Required tables
+   jobs (job_id, title, company, location, required_skills[], ...)
+   candidates (candidate_id, first_name, last_name, skills[], ...)
+   ```
+
+2. **Run export script**:
+   ```bash
+   python3 export_to_json.py \
+       --duckdb-path /path/to/your/database.db \
+       --github-repo .
+   ```
+
+3. **Commit and push**:
+   ```bash
+   git add jobs.json candidates.json data_refresh_timestamp.json
+   git commit -m "Initial data load"
+   git push origin main
+   ```
+
+---
+
+## Step 5: Set Up Weekly Refresh
+
+### Automated (Recommended)
+
+Set up a cron job to refresh data weekly:
+
+```bash
+crontab -e
+
+# Add this line (runs every Monday at 6 AM)
+0 6 * * 1 cd /path/to/candidate-matching && \
+    python3 export_to_json.py \
+        --duckdb-path /path/to/your/db.db \
+        --github-repo . && \
+    git add *.json data_refresh_timestamp.json && \
+    git commit -m "Weekly data refresh: $(date +\%Y-\%m-\%d)" && \
+    git push origin main >> /tmp/candidate_cron.log 2>&1
+```
+
+### Manual
+
+Run the export script weekly:
+
+```bash
+python3 export_to_json.py --duckdb-path /path/to/db.db --github-repo .
+git add *.json && git commit -m "Data refresh" && git push
+```
+
+---
+
+## Step 6: Share with Users
+
+Share this URL with your team:
+
+```
+https://YOUR_USERNAME.github.io/candidate-matching/
+```
+
+### For Private Repos
+
+If your repo is private:
+- Users need to be collaborators on the GitHub repo
+- Or make repo public (free with GitHub Pages)
+
+---
+
+## ✅ You're Done!
+
+Your candidate matcher is live. Next steps:
+
+1. **Test the app** - Select jobs and find matches
+2. **Add some notes** - Verify notes save correctly
+3. **Export data** - Try CSV/JSON export
+4. **Customize** - Adjust theme or matching weights if needed
+
+---
+
+## Troubleshooting
+
+**Page shows blank/error?**
+- Check browser console (F12) for errors
+- Verify JSON files exist in repo root
+- Wait 1-2 minutes after pushing for GitHub Pages to deploy
+
+**Data not loading?**
+- Ensure `jobs.json` and `candidates.json` are in repo root
+- Check file sizes (should be >1KB if they have data)
+- Try hard refresh (Ctrl+Shift+R)
+
+**Cron job not working?**
+- Test export script manually first
+- Check cron logs: `grep CRON /var/log/syslog`
+- Ensure PATH includes python3 in cron environment
+
+---
+
+## Next Steps
+
+- [User Guide](user-guide.qmd) - Learn all features
+- [Matching Algorithm](matching-algorithm.qmd) - Understand scoring
+- [Notes Feature](notes-feature.qmd) - Manage candidate notes
+- [Documentation](documentation.qmd) - Full reference

@@ -1,0 +1,133 @@
+---
+title: "Documentation"
+---
+
+## Complete Documentation
+
+Welcome to the Candidate Matcher documentation. This guide covers everything from quick start to advanced features.
+
+---
+
+## Table of Contents
+
+::: {layout-ncol=2}
+### Getting Started
+- [Quick Start](quickstart.qmd) - 5-minute setup
+- [Installation](installation.qmd) - Detailed deployment
+
+### User Guide  
+- [Using the Matcher](user-guide.qmd) - Step-by-step tutorial
+- [Matching Algorithm](matching-algorithm.qmd) - How scoring works
+- [Notes Feature](notes-feature.qmd) - Managing candidate notes
+
+### Technical
+- [Database Schema](schema.qmd) - DuckDB table structure
+- [Data Export](data-export.qmd) - Weekly refresh process
+- [API Reference](api-reference.qmd) - For developers
+:::
+
+---
+
+## Quick Reference
+
+### URLs
+
+| Page | URL |
+|------|-----|
+| **Live App** | https://ezraair555.github.io/candidate-matching/ |
+| **Notes Viewer** | https://ezraair555.github.io/candidate-matching/notes.html |
+| **GitHub Repo** | https://github.com/ezraair555/candidate-matching |
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `index.html` | Main matching application |
+| `notes.html` | Notes viewer page |
+| `app.js` | Matching logic + UI |
+| `styles.css` | Corporate theme styling |
+| `export_to_json.py` | Weekly ETL script |
+| `schema.sql` | Database schema reference |
+
+### Commands
+
+```bash
+# Test locally
+python3 -m http.server 8000
+
+# Export data manually
+python3 export_to_json.py --duckdb-path /path/to/db.db --github-repo .
+
+# Generate sample data
+python3 sample_data_generator.py
+
+# Setup repository
+./setup_github_repo.sh
+```
+
+---
+
+## FAQ
+
+### General
+
+**Q: Is this free?**  
+A: Yes! GitHub Pages is free for public repos. Private repos with Pages require GitHub Pro ($4/month).
+
+**Q: Do I need Python on my computer?**  
+A: No! Users only need a web browser. Python is only needed for the weekly data export (can run on a server).
+
+**Q: Can multiple people use this?**  
+A: Yes! Share the GitHub Pages URL. Each user's notes are stored in their own browser.
+
+### Data & Privacy
+
+**Q: Where is my data stored?**  
+A: Job/candidate data is in JSON files on GitHub. Notes are in your browser's localStorage.
+
+**Q: Are notes private?**  
+A: Yes, notes are stored locally in your browser and never sent to any server.
+
+**Q: What happens if I clear my browser cache?**  
+A: Notes will be lost. Export regularly as backup!
+
+**Q: Can I sync notes across devices?**  
+A: Not automatically. You'd need to manually copy localStorage data or use the CSV export/import.
+
+### Technical
+
+**Q: How often should I refresh data?**  
+A: Weekly is recommended. Set up a cron job to automate it.
+
+**Q: Can I customize the matching algorithm?**  
+A: Yes! Edit the `calculateMatchScore()` function in `app.js`.
+
+**Q: Can I change the colors/theme?**  
+A: Yes! Modify CSS variables in `styles.css` under `:root`.
+
+**Q: Does this work offline?**  
+A: Partially. Once loaded, the app works offline, but you need internet for initial load and data refresh.
+
+### Troubleshooting
+
+**Q: Page shows "Error loading data"**  
+A: Check that `jobs.json` and `candidates.json` exist in the repo root and were committed.
+
+**Q: GitHub Pages shows 404**  
+A: Wait 1-2 minutes after pushing. Check Settings → Pages is enabled with correct branch/folder.
+
+**Q: Match scores seem wrong**  
+A: Verify your data has required fields populated. Adjust weights in `app.js` if needed.
+
+**Q: Notes not saving**  
+A: Ensure browser allows localStorage (not incognito mode). Try clearing cache.
+
+---
+
+## Support
+
+- **GitHub Issues**: https://github.com/ezraair555/candidate-matching/issues
+- **Documentation**: Browse the sections above
+- **Source Code**: https://github.com/ezraair555/candidate-matching
+
+For questions or feature requests, open an issue on GitHub.

@@ -1,0 +1,281 @@
+---
+title: "User Guide"
+---
+
+## Complete User Guide
+
+Learn how to get the most out of Candidate Matcher.
+
+---
+
+## Getting Started
+
+### First Time Use
+
+1. **Open the app**: Navigate to your GitHub Pages URL
+2. **Wait for data**: Jobs and candidates load automatically
+3. **Check data status**: Top-right shows last refresh date
+
+### Main Interface
+
+The app has two main panels:
+
+**Left Panel (Job Selection)**
+- List of all active job postings
+- Search and filter controls
+- Multi-select checkboxes
+- Selected jobs summary
+
+**Right Panel (Candidate Results)**
+- Matching candidates grid
+- Filter controls (score, experience, search)
+- Candidate cards with preview info
+
+---
+
+## Step-by-Step Workflow
+
+### 1. Select Jobs
+
+**Search for jobs:**
+- Type in search box to filter by title, company, or location
+- Use employment type dropdown for full-time/part-time/contract
+
+**Select multiple jobs:**
+- Click on job cards to select/deselect
+- Hold Ctrl/Cmd to select multiple non-adjacent jobs
+- Selected jobs show blue highlight
+
+**Tip**: Select related jobs together (e.g., all "Software Engineer" roles) to find candidates matching any of them.
+
+### 2. Find Matches
+
+Click **"🔍 Find Matching Candidates"** button.
+
+The system will:
+- Score each candidate against selected jobs
+- Pick the best matching job for each candidate
+- Sort candidates by overall match score
+- Display results in right panel
+
+### 3. Filter Results
+
+Use filters to narrow down:
+
+**Search candidates:**
+- Search by name, current title, or skills
+
+**Minimum score:**
+- 50%+: All reasonable matches
+- 70%+: Strong matches only
+- 85%+: Top candidates
+
+**Experience level:**
+- Filter by entry, mid, senior, or executive
+
+### 4. Review Candidates
+
+Click any candidate card to open detailed view.
+
+**You'll see:**
+- Full profile (name, title, company, location)
+- Experience details (years, level, availability)
+- Contact info (email, LinkedIn if available)
+- Skills breakdown:
+  - ✅ Matched skills (green)
+  - ❌ Missing required skills (red)
+  - Other skills (gray)
+- Match score breakdown by category
+
+### 5. Add Notes
+
+In the candidate modal:
+
+1. **Write your note** in the text area
+   - Be specific about strengths/concerns
+   - Include salary expectations, availability
+   - Note any red flags or standout qualities
+
+2. **Add rating** (optional)
+   - 1-5 stars
+   - Helps with sorting later
+
+3. **Click "Save Note"**
+   - Note is saved to browser localStorage
+   - Appears in notes list immediately
+   - Persists across sessions
+
+**Tip**: Add notes right after reviewing - it's easy to forget details!
+
+### 6. Export Results
+
+When ready to share or backup:
+
+1. Click **"📤 Export Results"** button
+2. Choose format:
+   - **CSV**: Opens in Excel/Google Sheets
+   - **JSON**: For developers/data processing
+3. File downloads automatically
+
+**CSV includes:**
+- All candidate fields
+- Match scores
+- All notes with timestamps
+- Ratings
+
+---
+
+## Advanced Features
+
+### Multi-Job Matching
+
+Select multiple jobs to:
+- Find candidates matching any of the selected roles
+- Compare candidate fit across different levels
+- Build pipeline for similar positions
+
+**Example workflow:**
+1. Select "Junior Developer", "Mid Developer", "Senior Developer"
+2. See all candidates ranked by best fit
+3. Note which level each candidate matches best
+
+### Notes Management
+
+**View all notes:**
+- Click "📝 View All Notes" in header
+- See notes from all candidates
+- Sorted by newest first
+- Statistics dashboard shows totals
+
+**Export notes separately:**
+- From notes page, click "📊 Export CSV"
+- Get spreadsheet with all notes
+- Filter/sort in Excel as needed
+
+**Clear old notes:**
+- Use "🗑️ Clear All Notes" (with confirmation)
+- Export first as backup!
+
+---
+
+## Tips & Best Practices
+
+### Efficient Review Process
+
+1. **Batch by score**: Review 80%+ matches first
+2. **Quick scan**: Skim skills preview before clicking
+3. **Note immediately**: Don't move to next candidate without notes
+4. **Use ratings**: 5-star system helps prioritize later
+5. **Export weekly**: Backup notes before clearing cache
+
+### Writing Good Notes
+
+✅ **DO:**
+- Be specific: "Strong Python, lacks AWS experience"
+- Note concerns: "Salary expectation 20% above budget"
+- Record availability: "Can start in 2 weeks"
+- Culture fit: "Startup experience, may struggle in enterprise"
+- Follow-up items: "Send coding challenge", "Schedule technical screen"
+
+❌ **DON'T:**
+- Vague statements: "Good candidate"
+- Duplicate resume info without analysis
+- Forget to save before closing modal!
+
+### Filtering Strategies
+
+**For urgent hires:**
+- Min score: 85%+
+- Availability: "immediate" or "2-weeks"
+- Sort by score descending
+
+**For pipeline building:**
+- Min score: 50%+
+- Broader net
+- Tag with "future opportunity" notes
+
+**For specific skill needs:**
+- Search by skill name
+- Check matched skills in modal
+- Note training needs for near-matches
+
+---
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Ctrl+F` | Focus search box |
+| `Esc` | Close modal |
+| `Enter` | Confirm selection (in dialogs) |
+| `Ctrl+S` | Save note (when in note editor) |
+
+---
+
+## Common Tasks
+
+### "I need to find Python developers urgently"
+
+1. Search jobs for "Python" or select relevant jobs
+2. Set min score to 70%+
+3. Search candidates for "Python"
+4. Filter availability to "immediate"
+5. Review top matches, add notes
+6. Export CSV to share with hiring manager
+
+### "I want to review all my notes from this week"
+
+1. Click "📝 View All Notes"
+2. Notes are sorted by date (newest first)
+3. Export CSV if needed
+4. Use browser's Find (Ctrl+F) to search text
+
+### "How do I share candidates with my team?"
+
+1. Select jobs and run matching
+2. Add your notes/reviews
+3. Click "📤 Export Results" → CSV
+4. Email CSV to team
+5. Or share GitHub Pages URL (they'll see data but not your notes)
+
+### "I accidentally cleared my notes!"
+
+If you exported recently:
+1. Open the CSV in Excel
+2. Manually re-add important notes
+3. In future, export before clearing!
+
+If no export: Unfortunately, localStorage clearing is permanent. Consider implementing Google Sheets sync for future.
+
+---
+
+## Troubleshooting
+
+**No candidates showing after matching:**
+- Lower minimum score filter
+- Select different jobs
+- Check if candidates table has data
+
+**Notes not saving:**
+- Ensure not in incognito/private mode
+- Check browser storage settings
+- Try different browser
+
+**Match scores seem off:**
+- Review candidate's full profile
+- Check if required skills match
+- Adjust weights in app.js if needed (advanced)
+
+**Can't export:**
+- Allow pop-ups for the site
+- Check browser download settings
+- Try different browser
+
+---
+
+## Next Steps
+
+- [Matching Algorithm](matching-algorithm.qmd) - Understand scoring
+- [Notes Feature](notes-feature.qmd) - Deep dive on notes
+- [Documentation](documentation.qmd) - Full reference
+- [FAQ](documentation.qmd#faq) - Common questions

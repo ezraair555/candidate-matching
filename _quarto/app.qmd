@@ -1,0 +1,119 @@
+---
+title: "Match Candidates"
+page-layout: custom
+---
+
+```{=html}
+<!-- Embedded Candidate Matching Application -->
+<div id="app-container"></div>
+
+<!-- Load the app -->
+<script>
+// Fetch and inject the main app
+fetch('index.html')
+  .then(response => response.text())
+  .then(html => {
+    // Remove the header since we have Quarto navbar
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const container = doc.querySelector('.container');
+    
+    // Modify header for embedded view
+    const header = container.querySelector('.header');
+    if (header) {
+      header.style.margin = '0';
+      header.style.borderRadius = '0';
+      header.querySelector('h1').textContent = '🎯 Candidate Matcher';
+    }
+    
+    document.getElementById('app-container').appendChild(container);
+    
+    // Load styles
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'styles.css';
+    document.head.appendChild(link);
+    
+    // Load app script
+    const script = document.createElement('script');
+    script.src = 'app.js';
+    document.body.appendChild(script);
+  });
+</script>
+
+<style>
+#app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Override Quarto styles for app */
+#app-container .header {
+  margin-top: 0 !important;
+  border-radius: 6px !important;
+}
+</style>
+```
+
+## Using the Matcher
+
+### Step 1: Select Jobs
+
+Use the left panel to select one or more job postings. You can:
+- Search jobs by title, company, or location
+- Filter by employment type (full-time, part-time, contract)
+- Select multiple jobs to find candidates matching any of them
+
+### Step 2: Find Matches
+
+Click **"🔍 Find Matching Candidates"** to see candidates ranked by match score.
+
+### Step 3: Review Candidates
+
+Click on any candidate card to see:
+- Detailed profile information
+- Skills breakdown (matched vs missing)
+- Match score by category
+- Add notes and ratings
+
+### Step 4: Export Results
+
+Use the **"📤 Export Results"** button to download:
+- **CSV**: Spreadsheet format with all candidate data and notes
+- **JSON**: Structured data for further processing
+
+::: {.callout-tip}
+**Pro Tip**: Add notes immediately after reviewing candidates. Your notes are saved in browser localStorage and persist across sessions on the same device.
+:::
+
+---
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+F` | Search jobs/candidates |
+| `Esc` | Close modal |
+| `Enter` | Confirm selection |
+
+---
+
+## Troubleshooting
+
+**No candidates showing?**
+- Make sure you've selected at least one job
+- Try lowering the minimum score filter
+- Check if data has been refreshed this week
+
+**Notes not saving?**
+- Ensure browser allows localStorage (not incognito mode)
+- Check browser storage quota (~5-10MB available)
+- Try clearing cache and reloading
+
+**Data not loading?**
+- Check browser console (F12) for errors
+- Verify JSON files exist in repository
+- Wait 1-2 minutes after GitHub Pages deploy
+
+For more help, see [Documentation](documentation.qmd).

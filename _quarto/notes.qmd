@@ -1,0 +1,161 @@
+---
+title: "Candidate Notes"
+page-layout: custom
+---
+
+```{=html}
+<!-- Embedded Notes Viewer -->
+<div id="notes-container"></div>
+
+<script>
+// Fetch and inject the notes viewer
+fetch('notes.html')
+  .then(response => response.text())
+  .then(html => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const container = doc.querySelector('.container');
+    
+    // Remove back link since we have Quarto nav
+    const backLink = container.querySelector('.back-link');
+    if (backLink) {
+      backLink.remove();
+    }
+    
+    document.getElementById('notes-container').appendChild(container);
+    
+    // Load styles
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'styles.css';
+    document.head.appendChild(link);
+    
+    // Load notes script
+    const script = document.createElement('script');
+    script.src = 'notes.html'; // Will execute inline script
+    document.body.appendChild(script);
+  });
+</script>
+
+<style>
+#notes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+</style>
+```
+
+## About Notes
+
+Your notes are **persistently stored** in your browser's localStorage. Each note includes:
+
+### Captured Information
+
+**Candidate Details:**
+- Full name
+- Current title & company
+- Email address
+- Location
+- Years of experience
+- Complete skills list
+
+**Note Details:**
+- Your written comments
+- Rating (1-5 stars)
+- Creation timestamp
+- Last updated timestamp
+
+### Export Fields (CSV)
+
+When you export notes, you get these columns:
+
+```
+Candidate ID | First Name | Last Name | Email | Current Title | 
+Company | Location | Years Experience | Skills | Rating | Note | Created At
+```
+
+---
+
+## Managing Notes
+
+### View All Notes
+
+All notes are displayed on this page, sorted by newest first. Each note card shows:
+- Candidate profile summary
+- Full note text
+- Rating (⭐ stars)
+- Timestamp
+- Skills tags
+
+### Export Options
+
+**CSV Export**: Opens in Excel, Google Sheets, or any spreadsheet app
+- Best for: Reporting, sharing, analysis
+
+**JSON Export**: Structured data format
+- Best for: Developers, data processing, backup
+
+### Clear Notes
+
+Use **"🗑️ Clear All Notes"** to delete everything (with confirmation).
+
+::: {.callout-warning}
+**Warning**: Clearing notes is permanent and cannot be undone! Export first if you might need them later.
+:::
+
+---
+
+## Statistics Dashboard
+
+The notes page shows live statistics:
+
+| Metric | Description |
+|--------|-------------|
+| **Total Notes** | Count of all saved notes |
+| **Candidates with Notes** | Unique candidates you've reviewed |
+| **Average Rating** | Mean rating across all rated candidates |
+
+---
+
+## Best Practices
+
+✅ **Add notes immediately** after reviewing candidates  
+✅ **Rate consistently** (1-5 stars) for easy filtering later  
+✅ **Export weekly** as backup before clearing browser cache  
+✅ **Include specific details** - skills gaps, salary concerns, culture fit  
+✅ **Tag with keywords** for easier searching later  
+
+❌ **Don't rely solely on localStorage** - export regularly  
+❌ **Don't clear browser cache** without exporting first  
+❌ **Avoid vague notes** - be specific about strengths/concerns  
+
+---
+
+## Data Privacy
+
+- Notes are stored **locally in your browser** (localStorage)
+- **Not synced** across devices or browsers
+- **Not sent to any server** - completely client-side
+- **Not shared** with other users of the system
+- **Persist** across sessions on same browser/device
+
+::: {.callout-tip}
+**Multi-device users**: Export notes regularly and import them on other devices by copying the localStorage data (advanced users only).
+:::
+
+---
+
+## Accessing Notes Programmatically
+
+For developers, notes are stored in localStorage under key:
+
+```javascript
+const notes = localStorage.getItem('candidate_matcher_notes');
+// Structure: { candidate_id: [{note_text, rating, created_at}, ...] }
+```
+
+To export manually:
+```javascript
+JSON.parse(localStorage.getItem('candidate_matcher_notes'))
+```

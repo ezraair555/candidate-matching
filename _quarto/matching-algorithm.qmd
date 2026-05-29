@@ -1,0 +1,284 @@
+---
+title: "Matching Algorithm"
+---
+
+## How Candidate Scoring Works
+
+The matching algorithm scores candidates on **5 weighted dimensions** to produce an overall match score (0-100%).
+
+---
+
+## Scoring Dimensions
+
+### 1. Skills Match (40% weight)
+
+**What it measures:** Overlap between job's required skills and candidate's skills.
+
+**Calculation:**
+```
+If required_skills exist:
+    skills_score = (matched_required / total_required) × 100
+Else:
+    skills_score = 70 if preferred_skills matched, else 50
+```
+
+**Example:**
+- Job requires: Python, AWS, Docker, Kubernetes (4 skills)
+- Candidate has: Python, AWS, Docker (3 skills)
+- Score: (3/4) × 100 = **75%**
+
+**Matched vs Missing:**
+- ✅ Matched: Skills both job needs and candidate has
+- ❌ Missing: Required skills candidate lacks
+- Other: Nice-to-have skills not in job requirements
+
+---
+
+### 2. Experience Match (25% weight)
+
+**What it measures:** Whether candidate has enough years and appropriate level.
+
+**Level scoring:**
+| Level | Points |
+|-------|--------|
+| Entry | 1 |
+| Mid | 2 |
+| Senior | 3 |
+| Executive | 4 |
+
+**Calculation:**
+```
+If candidate_level >= job_level:
+    base_score = 100
+Else:
+    difference = job_level - candidate_level
+    base_score = max(0, 100 - (difference × 30))
+
+Bonus: +10 if years_experience >= typical for level
+```
+
+**Typical years by level:**
+- Entry: 0-2 years
+- Mid: 3-6 years
+- Senior: 7-11 years
+- Executive: 12+ years
+
+**Example:**
+- Job: Senior level (needs 7+ years)
+- Candidate A: Senior, 8 years → 100 + 10 = **110%** (capped at 100)
+- Candidate B: Mid, 4 years → 100 - 30 = **70%**
+- Candidate C: Entry, 1 year → 100 - 60 = **40%**
+
+---
+
+### 3. Level Match (15% weight)
+
+**What it measures:** How well candidate's seniority aligns with job level.
+
+**Scoring:**
+```
+If candidate_level == job_level:
+    score = 100
+Else if |candidate_level - job_level| == 1:
+    score = 70  (one level off)
+Else:
+    score = 40  (two+ levels off)
+```
+
+**Rationale:**
+- Exact match is ideal
+- One level off can work (e.g., strong mid for senior role)
+- Two+ levels off usually poor fit
+
+---
+
+### 4. Location Match (10% weight)
+
+**What it measures:** Geographic compatibility.
+
+**Scoring:**
+```
+If job is remote OR same city:
+    score = 100
+Else if both have location but different:
+    score = 50
+Else (unknown locations):
+    score = 60  (assume remote-friendly)
+```
+
+**Remote detection:**
+- Job location contains "remote" (case-insensitive)
+- Candidate and job in same city
+
+---
+
+### 5. Salary Match (10% weight)
+
+**What it measures:** Alignment between candidate expectations and job budget.
+
+**Calculation:**
+```
+If candidate_min <= job_max:
+    score = 100  (within budget)
+Else:
+    overlap_ratio = job_max / candidate_min
+    score = max(0, min(100, overlap_ratio × 100))
+Else (unknown):
+    score = 70  (assume negotiable)
+```
+
+**Example:**
+- Job budget: $120k-$160k
+- Candidate A: expects $110k-$130k → **100%** (within range)
+- Candidate B: expects $150k-$170k → **100%** (min within max)
+- Candidate C: expects $180k-$200k → 160/180 = **89%**
+- Candidate D: expects $220k+ → 160/220 = **73%**
+
+---
+
+## Overall Score Calculation
+
+### Weighted Formula
+
+```javascript
+overall_score = round(
+    (skills_score × 0.40) +
+    (experience_score × 0.25) +
+    (level_score × 0.15) +
+    (location_score × 0.10) +
+    (salary_score × 0.10)
+)
+```
+
+### Example Calculation
+
+**Job:** Senior Software Engineer
+- Required: Python, AWS, Docker, Kubernetes (4 skills)
+- Level: Senior (3 points)
+- Location: Remote
+- Salary: $140k-$180k
+
+**Candidate:** Jane Doe
+- Skills: Python, AWS, Docker, React (3 of 4 required)
+- Level: Mid (2 points), 5 years experience
+- Location: New York
+- Salary expectation: $150k-$170k
+
+**Scores:**
+1. Skills: 3/4 = 75%
+2. Experience: (100 - 30) + 0 = 70% (one level below, no bonus)
+3. Level: 70% (one level off)
+4. Location: 100% (job is remote)
+5. Salary: 100% (within budget)
+
+**Overall:**
+```
+(75 × 0.40) + (70 × 0.25) + (70 × 0.15) + (100 × 0.10) + (100 × 0.10)
+= 30 + 17.5 + 10.5 + 10 + 10
+= 78% overall score
+```
+
+**Result:** 🟡 Medium match (good potential)
+
+---
+
+## Score Interpretation
+
+| Score Range | Color | Meaning | Action |
+|-------------|-------|---------|--------|
+| 80-100% | 🟢 High | Excellent match | Priority review |
+| 60-79% | 🟡 Medium | Good potential | Worth considering |
+| 0-59% | 🔴 Low | Poor fit | Skip or special case |
+
+---
+
+## Customization
+
+### Adjust Weights
+
+Edit `app.js`, find `calculateMatchScore()`:
+
+```javascript
+// Current weights (must sum to 1.0)
+scores.overall_score = Math.round(
+    (scores.skills_match_score * 0.40) +    // Increase for skill-focused roles
+    (scores.experience_match_score * 0.25) + // Decrease for junior roles
+    (scores.level_match_score * 0.15) +      // Adjust based on flexibility
+    (scores.location_match_score * 0.10) +   // Increase for on-site roles
+    (scores.salary_match_score * 0.10)       // Increase for budget-constrained roles
+);
+```
+
+**Example adjustments:**
+
+**For technical roles (skills-focused):**
+```javascript
+skills: 0.50, experience: 0.25, level: 0.15, location: 0.05, salary: 0.05
+```
+
+**For leadership roles (level-focused):**
+```javascript
+skills: 0.25, experience: 0.30, level: 0.30, location: 0.10, salary: 0.05
+```
+
+**For remote-first companies:**
+```javascript
+skills: 0.40, experience: 0.25, level: 0.20, location: 0.05, salary: 0.10
+```
+
+### Modify Individual Scores
+
+Edit the specific scoring logic in `calculateMatchScore()`:
+
+**Make skills more stringent:**
+```javascript
+// Current: simple ratio
+skills_score = (matched / required) * 100
+
+// Stricter: penalize missing critical skills
+if missing_critical_skills > 0:
+    skills_score *= 0.8  // 20% penalty
+```
+
+**Adjust experience thresholds:**
+```javascript
+// Change years required per level
+const jobMinYears = {
+    entry: 0,
+    mid: 5,      // was 3
+    senior: 10,  // was 7
+    executive: 15 // was 12
+}[exp_level];
+```
+
+---
+
+## Best Practices
+
+### For Accurate Matching
+
+1. **Populate required_skills** - The more specific, the better
+2. **Set realistic experience levels** - Don't inflate seniority
+3. **Mark remote jobs clearly** - Include "Remote" in location
+4. **Provide salary ranges** - Helps filter mismatches early
+5. **Keep candidate skills updated** - Regular data refresh
+
+### Understanding Limitations
+
+**What the algorithm doesn't capture:**
+- Soft skills (communication, leadership)
+- Culture fit
+- Industry-specific knowledge
+- Career trajectory/growth potential
+- Employment gaps
+- Education quality
+
+**Use notes for these factors!** The algorithm is a starting point - human judgment is essential.
+
+---
+
+## Next Steps
+
+- [User Guide](user-guide.qmd) - How to use matching effectively
+- [Notes Feature](notes-feature.qmd) - Capture qualitative factors
+- [Schema Reference](schema.qmd) - Data structure for optimal matching

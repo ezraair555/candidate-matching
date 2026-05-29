@@ -1,0 +1,157 @@
+/* Custom Quarto Theme - Corporate Blue */
+
+// Colors
+$primary: #0066cc;
+$primary-dark: #004c99;
+$primary-light: #e6f0ff;
+$secondary: #5a6c7d;
+$success: #28a745;
+$warning: #ffc107;
+$danger: #dc3545;
+
+// Navbar customization
+.navbar {
+  background: linear-gradient(135deg, $primary 0%, $primary-dark 100%) !important;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+  
+  .navbar-title {
+    color: white !important;
+    font-weight: 600;
+  }
+  
+  .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    
+    &:hover {
+      color: white !important;
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+// Sidebar customization
+.sidebar {
+  background: $primary-light;
+  border-right: 1px solid darken($primary-light, 10%);
+  
+  .sidebar-title {
+    color: $primary-dark;
+    font-weight: 600;
+  }
+  
+  .sidebar-link {
+    color: $secondary;
+    
+    &:hover {
+      color: $primary;
+      background: rgba(0, 102, 204, 0.05);
+    }
+    
+    &.active {
+      color: $primary-dark;
+      background: white;
+      border-left: 3px solid $primary;
+    }
+  }
+}
+
+// Content styling
+.content {
+  h1, h2, h3 {
+    color: $primary-dark;
+    font-weight: 600;
+  }
+  
+  a {
+    color: $primary;
+    
+    &:hover {
+      color: $primary-dark;
+    }
+  }
+}
+
+// Callout boxes
+.callout {
+  &.callout-important {
+    border-left-color: $primary;
+    
+    .callout-header {
+      background: $primary-light;
+      color: $primary-dark;
+    }
+  }
+  
+  &.callout-warning {
+    border-left-color: $warning;
+    
+    .callout-header {
+      background: #fff8e1;
+      color: #856404;
+    }
+  }
+  
+  &.callout-tip {
+    border-left-color: $success;
+    
+    .callout-header {
+      background: #d4edda;
+      color: #155724;
+    }
+  }
+}
+
+// Tables
+table {
+  thead {
+    background: $primary-light;
+    
+    th {
+      color: $primary-dark;
+      font-weight: 600;
+    }
+  }
+  
+  tbody {
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    
+    tr:hover {
+      background: $primary-light;
+    }
+  }
+}
+
+// Code blocks
+.sourceCode {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  
+  pre {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+}
+
+// Buttons
+.btn {
+  &.btn-primary {
+    background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+    border: none;
+    
+    &:hover {
+      background: linear-gradient(135deg, $primary-dark 0%, #003d7a 100%);
+    }
+  }
+}
+
+// Footer
+footer {
+  border-top: 2px solid $primary-light;
+  padding-top: 20px;
+  margin-top: 40px;
+  
+  color: $secondary;
+}

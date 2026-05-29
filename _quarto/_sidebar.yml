@@ -1,0 +1,19 @@
+website:
+  sidebar:
+    contents:
+      - index.qmd
+      - section: "Getting Started"
+        contents:
+          - quickstart.qmd
+          - installation.qmd
+      - section: "User Guide"
+        contents:
+          - user-guide.qmd
+          - matching-algorithm.qmd
+          - notes-feature.qmd
+      - section: "Technical"
+        contents:
+          - schema.qmd
+          - data-export.qmd
+          - api-reference.qmd
+      - documentation.qmd

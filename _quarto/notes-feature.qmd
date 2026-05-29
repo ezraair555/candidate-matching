@@ -1,0 +1,440 @@
+---
+title: "Notes Feature"
+---
+
+## Candidate Notes System
+
+Persistent note-taking for candidate tracking and collaboration.
+
+---
+
+## Overview
+
+The notes feature allows you to:
+- ✅ Add detailed notes to any candidate
+- ✅ Rate candidates (1-5 stars)
+- ✅ View all notes in one place
+- ✅ Export notes to CSV/JSON
+- ✅ Track review history with timestamps
+
+---
+
+## How Notes Are Stored
+
+### Storage Location
+
+Notes are stored in **browser localStorage** under the key:
+
+```javascript
+'candidate_matcher_notes'
+```
+
+### Data Structure
+
+```json
+{
+  "candidate_id": [
+    {
+      "note_text": "Strong Python skills, lacks AWS experience...",
+      "rating": 4,
+      "created_at": "2026-05-29T12:00:00.000Z",
+      "updated_at": "2026-05-29T12:00:00.000Z"
+    },
+    // ... more notes for this candidate
+  ],
+  // ... more candidates
+}
+```
+
+### Implications
+
+**✅ Advantages:**
+- No server required
+- Instant save (no network delay)
+- Works offline
+- Private (never leaves your browser)
+- Persists across sessions
+
+**⚠️ Limitations:**
+- Not synced across devices
+- Lost if browser cache cleared
+- No backup unless exported
+- Per-browser storage (~5-10MB limit)
+
+---
+
+## Adding Notes
+
+### Step-by-Step
+
+1. **Open candidate modal**
+   - Click on candidate card from results
+   - Or search and select from list
+
+2. **Scroll to Notes section**
+   - Below profile and skills
+   - Text area labeled "Add your notes here..."
+
+3. **Write your note**
+   - Be specific and actionable
+   - Include concerns, strengths, next steps
+   - Reference job requirements if relevant
+
+4. **Add rating (optional)**
+   - Select 1-5 stars from dropdown
+   - Helps prioritize later
+   - Not required
+
+5. **Click "Save Note"**
+   - Note appears in list below immediately
+   - Shows timestamp
+   - Can add multiple notes per candidate
+
+### Example Notes
+
+**Good examples:**
+
+> "Excellent Python and Django skills. Lacks AWS experience but has GCP - should transfer easily. Salary expectation ($150k) is within our $140-180k range. Available in 2 weeks. Recommend technical screen." ⭐⭐⭐⭐
+
+> "Red flag: Job hopped 3 times in 2 years. Strong technical skills but may not stay long-term. Consider for contract role instead of full-time." ⭐⭐
+
+> "Perfect culture fit - startup experience, wears many hats. Skills match 85%. Can start immediately. Let's fast-track to final round!" ⭐⭐⭐⭐⭐
+
+**Avoid:**
+
+> "Good candidate." ❌ (too vague)
+
+> "Has Python, AWS, Docker." ❌ (just restating resume)
+
+---
+
+## Viewing Notes
+
+### Notes Viewer Page
+
+Access via:
+- Click **"📝 View All Notes"** link in header
+- Or go directly to `/notes.html`
+
+**Features:**
+- All notes from all candidates
+- Sorted by newest first
+- Full candidate context displayed
+- Statistics dashboard
+
+### Statistics Dashboard
+
+Shows at top of notes page:
+
+| Metric | Description |
+|--------|-------------|
+| **Total Notes** | Count of all saved notes |
+| **Candidates with Notes** | Unique candidates reviewed |
+| **Average Rating** | Mean rating (only rated notes) |
+
+### Note Card Display
+
+Each note shows:
+- Candidate name, title, company
+- Location, years experience
+- Email (if available)
+- Skills tags (first 5 + count)
+- Rating (stars)
+- Full note text
+- Timestamp
+
+---
+
+## Exporting Notes
+
+### CSV Export
+
+**What you get:**
+```csv
+Candidate ID,First Name,Last Name,Email,Current Title,Company,Location,Years Experience,Skills,Rating,Note,Created At
+123,Jane,Doe,jane@email.com,Senior Engineer,TechCorp,"New York, NY",8,"Python;AWS;Docker",4,"Strong candidate...",2026-05-29T12:00:00Z
+```
+
+**Use cases:**
+- Share with hiring team
+- Import into spreadsheet for analysis
+- Backup before clearing cache
+- Archive for compliance
+
+### JSON Export
+
+**What you get:**
+```json
+{
+  "exported_at": "2026-05-29T12:00:00Z",
+  "total_notes": 15,
+  "notes": [
+    {
+      "candidate": { ... full candidate data ... },
+      "notes": [ ... all notes for this candidate ... ]
+    }
+  ]
+}
+```
+
+**Use cases:**
+- Developers/programmatic access
+- Re-import later (manual process)
+- Complete backup with structure
+- Integration with other tools
+
+### How to Export
+
+1. Go to notes page (`notes.html`)
+2. Click **"📊 Export CSV"** or **"📄 Export JSON"**
+3. File downloads automatically
+4. Save to desired location
+
+**Best practice:** Export weekly as part of your routine.
+
+---
+
+## Managing Notes
+
+### Clear All Notes
+
+**Warning:** This deletes everything permanently!
+
+**Steps:**
+1. Go to notes page
+2. Click **"🗑️ Clear All Notes"**
+3. Confirm in dialog
+4. All notes deleted from localStorage
+
+**Before clearing:**
+- ✅ Export CSV as backup
+- ✅ Ensure important candidates have been shared
+- ✅ Team has reviewed notes if collaborating
+
+### Individual Note Deletion
+
+Currently not supported in UI. To delete individual notes:
+1. Export JSON backup
+2. Open browser DevTools (F12)
+3. Go to Application → Local Storage
+4. Find `candidate_matcher_notes`
+5. Edit JSON manually
+6. Save changes
+
+(Advanced users only!)
+
+---
+
+## Best Practices
+
+### When to Add Notes
+
+**Always add notes when:**
+- ✅ Candidate is a strong match (80%+)
+- ✅ You have specific concerns
+- ✅ Next steps are needed
+- ✅ Salary/availability issues
+- ✅ Referring to another role
+- ✅ Scheduling interviews
+
+**Optional for:**
+- Low matches you're skipping
+- Candidates clearly not qualified
+- Duplicate applications
+
+### What to Include
+
+**Essential:**
+- Key strengths relative to job
+- Major gaps or concerns
+- Availability timeline
+- Salary expectation vs budget
+- Recommended next step
+
+**Helpful additions:**
+- Culture fit assessment
+- Communication style observed
+- Technical depth in specific areas
+- Comparison to other candidates
+- Referral source quality
+
+### Note Organization
+
+**Structure suggestions:**
+
+```
+[Strengths]
+- Skill A: Advanced level, 5 years
+- Skill B: Working knowledge
+
+[Concerns]
+- Missing: Required skill C
+- Salary: 15% above range
+
+[Logistics]
+- Availability: 2 weeks notice
+- Location: Willing to relocate
+
+[Recommendation]
+→ Proceed to technical screen
+→ Consider for senior role instead
+→ Keep in pipeline for future opening
+```
+
+---
+
+## Collaboration Workflows
+
+### Sharing with Team
+
+**Option 1: Export CSV**
+1. Review candidates, add notes
+2. Export CSV
+3. Email to hiring manager/team
+4. Discuss in meeting
+
+**Option 2: Shared Screen**
+1. Share GitHub Pages URL
+2. Each team member reviews independently
+3. Notes are per-person (not shared)
+4. Consolidate manually
+
+**Option 3: Assign Reviews**
+1. Person A reviews candidates 1-20
+2. Person B reviews candidates 21-40
+3. Both export their notes
+4. Merge CSVs in Excel
+
+### Multi-Device Users
+
+If you use multiple computers/browsers:
+
+**Challenge:** Notes don't sync automatically
+
+**Solutions:**
+1. **Export/Import manually** (advanced)
+   - Export JSON from device A
+   - Manually merge with device B localStorage
+   
+2. **Designate primary device**
+   - Always review on same computer
+   - Use other devices for viewing only
+
+3. **Use Google Sheets backend** (future feature)
+   - Notes sync automatically
+   - Requires setup
+
+---
+
+## Privacy & Security
+
+### Data Privacy
+
+- Notes **never leave your browser**
+- Not sent to GitHub, servers, or third parties
+- Only visible to you (on same browser)
+- Deleted when localStorage cleared
+
+### Security Considerations
+
+**Safe for:**
+- Internal candidate assessments
+- Interview feedback
+- Salary negotiation notes
+- Team collaboration (with export)
+
+**Not recommended for:**
+- SSN or sensitive PII
+- Background check results
+- Compensation decisions (without export backup)
+- Legal/compliance records (use official system)
+
+### Compliance
+
+For GDPR/CCPA compliance:
+- Notes contain personal data (candidate info)
+- Export and store securely if retaining
+- Delete when no longer needed
+- Don't include sensitive data types
+
+---
+
+## Troubleshooting
+
+**Notes not saving:**
+- Check browser allows localStorage
+- Not in incognito/private mode
+- Try different browser
+- Clear cache and reload
+
+**Notes disappeared:**
+- Browser cache was cleared
+- Different browser/device used
+- Check localStorage quota exceeded
+- Restore from CSV export if available
+
+**Can't add more notes:**
+- localStorage quota reached (~5-10MB)
+- Export old notes and clear space
+- Delete very old notes
+
+**Want to sync across devices:**
+- Currently not supported
+- Export/import manually (advanced)
+- Wait for Google Sheets integration (future)
+
+---
+
+## Advanced: Programmatic Access
+
+### Read Notes via Console
+
+```javascript
+// Get all notes
+const notes = JSON.parse(localStorage.getItem('candidate_matcher_notes'));
+
+// Get notes for specific candidate
+const candidateNotes = notes[123]; // replace with candidate_id
+
+// Count total notes
+const totalNotes = Object.values(notes).flat().length;
+```
+
+### Modify Notes via Console
+
+```javascript
+// Add a note programmatically
+const notes = JSON.parse(localStorage.getItem('candidate_matcher_notes')) || {};
+
+if (!notes[123]) notes[123] = [];
+
+notes[123].push({
+  note_text: 'Added via console',
+  rating: 5,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString()
+});
+
+localStorage.setItem('candidate_matcher_notes', JSON.stringify(notes));
+```
+
+### Backup Script
+
+```javascript
+// Download all notes as JSON file
+const notes = localStorage.getItem('candidate_matcher_notes');
+const blob = new Blob([notes], {type: 'application/json'});
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `notes_backup_${new Date().toISOString().split('T')[0]}.json`;
+a.click();
+```
+
+---
+
+## Next Steps
+
+- [User Guide](user-guide.qmd) - General usage
+- [Matching Algorithm](matching-algorithm.qmd) - How scoring works
+- [Data Export](data-export.qmd) - Weekly refresh process

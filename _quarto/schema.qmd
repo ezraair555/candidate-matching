@@ -1,0 +1,360 @@
+---
+title: "Database Schema"
+---
+
+## DuckDB Table Structure
+
+Reference schema for jobs and candidates tables.
+
+---
+
+## Jobs Table
+
+### Definition
+
+```sql
+CREATE TABLE jobs (
+    job_id INTEGER PRIMARY KEY,
+    
+    -- Basic Info
+    title TEXT NOT NULL,
+    company TEXT,
+    location TEXT,
+    
+    -- Job Details
+    employment_type TEXT,  -- full-time, part-time, contract
+    experience_level TEXT, -- entry, mid, senior, executive
+    description TEXT,
+    
+    -- Compensation
+    salary_min DECIMAL,
+    salary_max DECIMAL,
+    
+    -- Skills (Arrays)
+    required_skills TEXT[],
+    preferred_skills TEXT[],
+    
+    -- Metadata
+    posted_date DATE,
+    status TEXT DEFAULT 'active',  -- active, closed, on-hold
+    source TEXT,  -- linkedin, indeed, internal, referral
+    external_url TEXT,
+    
+    -- Timestamps
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Field Descriptions
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `job_id` | INTEGER | ✅ | Unique identifier |
+| `title` | TEXT | ✅ | Job title (e.g., "Senior Software Engineer") |
+| `company` | TEXT | | Company name |
+| `location` | TEXT | | City, State or "Remote" |
+| `employment_type` | TEXT | | full-time, part-time, contract |
+| `experience_level` | TEXT | | entry, mid, senior, executive |
+| `description` | TEXT | | Full job description |
+| `salary_min` | DECIMAL | | Minimum salary/range start |
+| `salary_max` | DECIMAL | | Maximum salary/range end |
+| `required_skills` | TEXT[] | | **Critical** - skills candidate must have |
+| `preferred_skills` | TEXT[] | | Nice-to-have skills |
+| `posted_date` | DATE | | When job was posted |
+| `status` | TEXT | | active jobs are shown, others hidden |
+| `source` | TEXT | | Where job was posted |
+| `external_url` | TEXT | | Link to apply |
+
+### Example Data
+
+```sql
+INSERT INTO jobs VALUES (
+    1,                              -- job_id
+    'Senior Software Engineer',     -- title
+    'TechCorp Inc',                 -- company
+    'Remote',                       -- location
+    'full-time',                    -- employment_type
+    'senior',                       -- experience_level
+    'We are looking for...',        -- description
+    140000,                         -- salary_min
+    180000,                         -- salary_max
+    ['Python', 'AWS', 'Docker'],   -- required_skills
+    ['Kubernetes', 'React'],        -- preferred_skills
+    '2026-05-01',                   -- posted_date
+    'active',                       -- status
+    'linkedin',                     -- source
+    'https://example.com/jobs/1',  -- external_url
+    NOW(),                          -- created_at
+    NOW()                           -- updated_at
+);
+```
+
+---
+
+## Candidates Table
+
+### Definition
+
+```sql
+CREATE TABLE candidates (
+    candidate_id INTEGER PRIMARY KEY,
+    
+    -- Personal Info
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT,
+    phone TEXT,
+    location TEXT,
+    
+    -- Current Role
+    current_title TEXT,
+    current_company TEXT,
+    
+    -- Experience
+    years_experience INTEGER,
+    experience_level TEXT,  -- entry, mid, senior, executive
+    
+    -- Skills (Array)
+    skills TEXT[],
+    
+    -- Education
+    education_level TEXT,   -- high-school, bachelor, master, phd
+    education_field TEXT,
+    
+    -- Logistics
+    availability TEXT,      -- immediate, 2-weeks, 1-month, not-looking
+    salary_expectation_min DECIMAL,
+    salary_expectation_max DECIMAL,
+    
+    -- Links
+    resume_url TEXT,
+    linkedin_url TEXT,
+    portfolio_url TEXT,
+    
+    -- Source
+    source TEXT,            -- applied, referred, sourced, agency
+    status TEXT DEFAULT 'active',  -- active, placed, archived
+    
+    -- Timestamps
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Field Descriptions
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `candidate_id` | INTEGER | ✅ | Unique identifier |
+| `first_name` | TEXT | ✅ | First name |
+| `last_name` | TEXT | ✅ | Last name |
+| `email` | TEXT | | Email address |
+| `phone` | TEXT | | Phone number |
+| `location` | TEXT | | City, State |
+| `current_title` | TEXT | | Current job title |
+| `current_company` | TEXT | | Current employer |
+| `years_experience` | INTEGER | | Total years of experience |
+| `experience_level` | TEXT | | entry, mid, senior, executive |
+| `skills` | TEXT[] | | **Critical** - all candidate skills |
+| `education_level` | TEXT | | Highest degree |
+| `education_field` | TEXT | | Field of study |
+| `availability` | TEXT | | When can start |
+| `salary_expectation_min` | DECIMAL | | Minimum expected salary |
+| `salary_expectation_max` | DECIMAL | | Maximum expected salary |
+| `resume_url` | TEXT | | Link to resume |
+| `linkedin_url` | TEXT | | LinkedIn profile URL |
+| `portfolio_url` | TEXT | | GitHub/portfolio URL |
+| `source` | TEXT | | How candidate was found |
+| `status` | TEXT | | active candidates shown in matching |
+
+### Example Data
+
+```sql
+INSERT INTO candidates VALUES (
+    1,                              -- candidate_id
+    'Jane',                         -- first_name
+    'Doe',                          -- last_name
+    'jane@email.com',               -- email
+    '555-123-4567',                 -- phone
+    'New York, NY',                 -- location
+    'Senior Developer',             -- current_title
+    'StartupXYZ',                   -- current_company
+    8,                              -- years_experience
+    'senior',                       -- experience_level
+    ['Python', 'AWS', 'Docker', 'React'],  -- skills
+    'master',                       -- education_level
+    'Computer Science',             -- education_field
+    '2-weeks',                      -- availability
+    150000,                         -- salary_expectation_min
+    170000,                         -- salary_expectation_max
+    'https://example.com/resume.pdf',  -- resume_url
+    'https://linkedin.com/in/janedoe', -- linkedin_url
+    'https://github.com/janedoe',   -- portfolio_url
+    'sourced',                      -- source
+    'active',                       -- status
+    NOW(),                          -- created_at
+    NOW()                           -- updated_at
+);
+```
+
+---
+
+## Optional Tables
+
+### Candidate Experience (Detailed Work History)
+
+```sql
+CREATE TABLE candidate_experience (
+    id INTEGER PRIMARY KEY,
+    candidate_id INTEGER REFERENCES candidates(candidate_id),
+    company TEXT,
+    title TEXT,
+    start_date DATE,
+    end_date DATE,
+    is_current BOOLEAN DEFAULT FALSE,
+    description TEXT,
+    skills_used TEXT[]
+);
+```
+
+### Match Scores (Pre-computed)
+
+```sql
+CREATE TABLE match_scores (
+    id INTEGER PRIMARY KEY,
+    candidate_id INTEGER REFERENCES candidates(candidate_id),
+    job_id INTEGER REFERENCES jobs(job_id),
+    overall_score DECIMAL,
+    skills_match_score DECIMAL,
+    experience_match_score DECIMAL,
+    level_match_score DECIMAL,
+    location_match_score DECIMAL,
+    salary_match_score DECIMAL,
+    matched_skills TEXT[],
+    missing_skills TEXT[],
+    computed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Notes (If Using Backend)
+
+```sql
+CREATE TABLE candidate_notes (
+    note_id INTEGER PRIMARY KEY,
+    candidate_id INTEGER REFERENCES candidates(candidate_id),
+    job_id INTEGER REFERENCES jobs(job_id),
+    user_email TEXT,
+    note_text TEXT NOT NULL,
+    rating INTEGER CHECK (rating BETWEEN 1 AND 5),
+    tags TEXT[],
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+## Indexes for Performance
+
+```sql
+-- For skills array searches
+CREATE INDEX idx_candidates_skills ON candidates USING GIN (skills);
+CREATE INDEX idx_jobs_skills ON jobs USING GIN (required_skills);
+
+-- For level filtering
+CREATE INDEX idx_candidates_level ON candidates(experience_level);
+CREATE INDEX idx_jobs_level ON jobs(experience_level);
+
+-- For match score lookups
+CREATE INDEX idx_match_scores_candidate ON match_scores(candidate_id);
+CREATE INDEX idx_match_scores_job ON match_scores(job_id);
+```
+
+---
+
+## Data Quality Guidelines
+
+### Required Fields for Matching
+
+For best results, ensure these fields are populated:
+
+**Jobs:**
+- ✅ `required_skills` - At least 3-5 skills
+- ✅ `experience_level` - entry/mid/senior/executive
+- ✅ `status` - Set to 'active' for visible jobs
+- ✅ `salary_min`/`salary_max` - For salary matching
+- ✅ `location` - Include "Remote" if applicable
+
+**Candidates:**
+- ✅ `skills` - Comprehensive list (10+ recommended)
+- ✅ `experience_level` - Matches job levels
+- ✅ `years_experience` - Numeric value
+- ✅ `availability` - For filtering
+- ✅ `status` - Set to 'active' for available candidates
+
+### Common Issues
+
+**Skills not matching:**
+- Check spelling consistency (Python vs python)
+- Ensure both job and candidate have skills populated
+- Verify skills are arrays, not comma-separated strings
+
+**Experience level mismatches:**
+- Use consistent values: entry, mid, senior, executive
+- Don't use variations like "junior" or "staff"
+
+**Location not working:**
+- Use "Remote" explicitly for remote jobs
+- Be consistent with city/state format
+
+---
+
+## Migration from Other Systems
+
+### From CSV
+
+```python
+import duckdb
+import pandas as pd
+
+# Read CSV
+df = pd.read_csv('candidates.csv')
+
+# Connect to DuckDB
+conn = duckdb.connect('candidates.db')
+
+# Create table and insert
+conn.execute("CREATE TABLE candidates AS SELECT * FROM df")
+```
+
+### From PostgreSQL
+
+```bash
+# Export from Postgres
+pg_dump -t candidates old_db > candidates.sql
+
+# Import to DuckDB
+duckdb candidates.db < candidates.sql
+```
+
+### From ATS Systems
+
+Most ATS systems can export to CSV. Map fields:
+
+| ATS Field | DuckDB Field |
+|-----------|--------------|
+| First Name | first_name |
+| Last Name | last_name |
+| Email | email |
+| Current Position | current_title |
+| Years of Experience | years_experience |
+| Skills | skills (as array) |
+
+---
+
+## Next Steps
+
+- [Data Export](data-export.qmd) - Weekly refresh process
+- [Matching Algorithm](matching-algorithm.qmd) - How data is used
+- [Installation](installation.qmd) - Set up your database
