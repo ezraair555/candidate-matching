@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+
+# DuckDB
+*.db
+*.duckdb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated data files (these should be committed by the ETL script)
+# Uncomment if you want to keep them out of git:
+# jobs.json
+# candidates.json
+# match_scores.json
+# data_refresh_timestamp.json
+
+# Notes export (optional - if users download notes)
+candidate_notes_*.json
+candidate_notes_*.csv

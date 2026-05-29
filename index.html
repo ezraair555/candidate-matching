@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Matcher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎯 Candidate Matcher</h1>
+            <div class="data-status" id="dataStatus">
+                <span class="status-indicator"></span>
+                <span class="status-text">Loading data...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Job Selection -->
+            <section class="panel job-selection-panel">
+                <h2>📋 Select Jobs</h2>
+                <div class="job-filters">
+                    <input type="text" id="jobSearch" placeholder="Search jobs..." class="search-input">
+                    <select id="jobTypeFilter" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="full-time">Full-Time</option>
+                        <option value="part-time">Part-Time</option>
+                        <option value="contract">Contract</option>
+                    </select>
+                </div>
+                <div class="job-list" id="jobList">
+                    <!-- Jobs loaded dynamically -->
+                </div>
+                <div class="selected-jobs-summary" id="selectedJobsSummary">
+                    <strong>0</strong> jobs selected
+                </div>
+                <button id="matchBtn" class="btn btn-primary" disabled>
+                    🔍 Find Matching Candidates
+                </button>
+            </section>
+
+            <!-- Right Panel: Candidate Results -->
+            <section class="panel candidates-panel">
+                <h2>👥 Matching Candidates</h2>
+                <div class="candidate-filters" id="candidateFilters" style="display: none;">
+                    <input type="text" id="candidateSearch" placeholder="Search candidates..." class="search-input">
+                    <select id="minScoreFilter" class="filter-select">
+                        <option value="0">Min Score: 0%</option>
+                        <option value="50" selected>Min Score: 50%</option>
+                        <option value="70">Min Score: 70%</option>
+                        <option value="85">Min Score: 85%</option>
+                    </select>
+                    <select id="experienceFilter" class="filter-select">
+                        <option value="">All Levels</option>
+                        <option value="entry">Entry</option>
+                        <option value="mid">Mid</option>
+                        <option value="senior">Senior</option>
+                        <option value="executive">Executive</option>
+                    </select>
+                </div>
+                <div class="candidates-grid" id="candidatesGrid">
+                    <div class="empty-state" id="emptyState">
+                        <p>👈 Select jobs from the left to see matching candidates</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Candidate Detail Modal -->
+        <div class="modal" id="candidateModal">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div class="modal-header">
+                    <h2 id="modalCandidateName"></h2>
+                    <div class="match-score-badge" id="modalMatchScore"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="candidate-detail-section">
+                        <h3>📊 Match Breakdown</h3>
+                        <div class="score-bars" id="modalScoreBars"></div>
+                    </div>
+                    
+                    <div class="candidate-detail-section">
+                        <h3>💼 Profile</h3>
+                        <div id="modalProfile"></div>
+                    </div>
+                    
+                    <div class="candidate-detail-section">
+                        <h3>🛠️ Skills</h3>
+                        <div class="skills-container" id="modalSkills"></div>
+                    </div>
+                    
+                    <div class="candidate-detail-section">
+                        <h3>📝 Notes</h3>
+                        <div class="notes-section">
+                            <textarea id="noteInput" placeholder="Add your notes here..." rows="4"></textarea>
+                            <div class="notes-actions">
+                                <select id="noteRating">
+                                    <option value="">Rating (optional)</option>
+                                    <option value="1">⭐ 1 star</option>
+                                    <option value="2">⭐⭐ 2 stars</option>
+                                    <option value="3">⭐⭐⭐ 3 stars</option>
+                                    <option value="4">⭐⭐⭐⭐ 4 stars</option>
+                                    <option value="5">⭐⭐⭐⭐⭐ 5 stars</option>
+                                </select>
+                                <button id="saveNoteBtn" class="btn btn-primary">Save Note</button>
+                            </div>
+                            <div class="notes-list" id="notesList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div class="modal" id="exportModal">
+            <div class="modal-content modal-small">
+                <button class="modal-close" id="exportModalClose">&times;</button>
+                <h2>📤 Export Results</h2>
+                <p>Export your selected candidates and notes:</p>
+                <div class="export-options">
+                    <button id="exportCSV" class="btn btn-primary">Download CSV</button>
+                    <button id="exportJSON" class="btn btn-secondary">Download JSON</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

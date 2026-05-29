@@ -1,0 +1,9 @@
+{
+  "last_refresh": "2026-05-29T11:13:53.197713+00:00",
+  "timezone": "UTC",
+  "source_db": "/home/lucas/.openclaw/workspace/candidate_matching/sample.db",
+  "tables_exported": [
+    "jobs",
+    "candidates"
+  ]
+}

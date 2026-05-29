@@ -1,0 +1,600 @@
+[
+  {
+    "job_id": 1,
+    "title": "Backend Engineer",
+    "company": "Quantum Computing Co",
+    "location": "Los Angeles, CA",
+    "employment_type": "part-time",
+    "experience_level": "senior",
+    "salary_min": 120000.0,
+    "salary_max": 160000.0,
+    "description": "Exciting opportunity for a senior level engineer...",
+    "required_skills": [
+      "MySQL",
+      "GCP",
+      "Data Science",
+      "Machine Learning",
+      "Rust",
+      "Elasticsearch",
+      "FastAPI",
+      "React"
+    ],
+    "preferred_skills": [
+      "Go",
+      "PostgreSQL"
+    ],
+    "posted_date": "2025-03-29T00:00:00",
+    "status": "active",
+    "source": "indeed",
+    "external_url": "https://example.com/jobs/1",
+    "created_at": "2026-05-29T07:13:21.470265",
+    "updated_at": "2026-05-29T07:13:21.470271"
+  },
+  {
+    "job_id": 2,
+    "title": "Product Manager",
+    "company": "Enterprise Solutions",
+    "location": "Miami, FL",
+    "employment_type": "part-time",
+    "experience_level": "senior",
+    "salary_min": 120000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a senior level engineer...",
+    "required_skills": [
+      "Machine Learning",
+      "Docker",
+      "Scrum",
+      "Kubernetes",
+      "Redis",
+      "Data Science",
+      "Data Engineering",
+      "GCP"
+    ],
+    "preferred_skills": [
+      "Go",
+      "Node.js",
+      "SQL",
+      "PHP"
+    ],
+    "posted_date": "2024-11-11T00:00:00",
+    "status": "closed",
+    "source": "indeed",
+    "external_url": "https://example.com/jobs/2",
+    "created_at": "2026-05-29T07:13:21.470311",
+    "updated_at": "2026-05-29T07:13:21.470314"
+  },
+  {
+    "job_id": 3,
+    "title": "Backend Engineer",
+    "company": "CyberSecure",
+    "location": "San Francisco, CA",
+    "employment_type": "part-time",
+    "experience_level": "senior",
+    "salary_min": 140000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a senior level engineer...",
+    "required_skills": [
+      "FastAPI",
+      "Data Science",
+      "PHP"
+    ],
+    "preferred_skills": [
+      "MongoDB",
+      "React",
+      "Flask",
+      "Angular"
+    ],
+    "posted_date": "2026-05-17T00:00:00",
+    "status": "active",
+    "source": "linkedin",
+    "external_url": "https://example.com/jobs/3",
+    "created_at": "2026-05-29T07:13:21.470343",
+    "updated_at": "2026-05-29T07:13:21.470345"
+  },
+  {
+    "job_id": 4,
+    "title": "Full Stack Engineer",
+    "company": "CodeCraft",
+    "location": "New York, NY",
+    "employment_type": "contract",
+    "experience_level": "executive",
+    "salary_min": 120000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Data Science",
+      "Terraform",
+      "Angular",
+      "Agile",
+      "AWS",
+      "GCP"
+    ],
+    "preferred_skills": [
+      "Python",
+      "Leadership",
+      "Go"
+    ],
+    "posted_date": "2025-02-04T00:00:00",
+    "status": "active",
+    "source": "referral",
+    "external_url": "https://example.com/jobs/4",
+    "created_at": "2026-05-29T07:13:21.470375",
+    "updated_at": "2026-05-29T07:13:21.470376"
+  },
+  {
+    "job_id": 5,
+    "title": "Senior Software Engineer",
+    "company": "CyberSecure",
+    "location": "Austin, TX",
+    "employment_type": "full-time",
+    "experience_level": "entry",
+    "salary_min": 140000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a entry level engineer...",
+    "required_skills": [
+      "React",
+      "Scrum",
+      "C++",
+      "MongoDB",
+      "Terraform",
+      "Leadership",
+      "Python",
+      "Java"
+    ],
+    "preferred_skills": [
+      "Data Science",
+      "Docker"
+    ],
+    "posted_date": "2024-12-01T00:00:00",
+    "status": "active",
+    "source": "linkedin",
+    "external_url": "https://example.com/jobs/5",
+    "created_at": "2026-05-29T07:13:21.470405",
+    "updated_at": "2026-05-29T07:13:21.470407"
+  },
+  {
+    "job_id": 6,
+    "title": "Director of Engineering",
+    "company": "NextGen Labs",
+    "location": "Atlanta, GA",
+    "employment_type": "full-time",
+    "experience_level": "entry",
+    "salary_min": 160000.0,
+    "salary_max": 220000.0,
+    "description": "Exciting opportunity for a entry level engineer...",
+    "required_skills": [
+      "Go",
+      "Terraform",
+      "DevOps",
+      "Django",
+      "PHP",
+      "Scrum"
+    ],
+    "preferred_skills": [
+      "GCP",
+      "Data Science"
+    ],
+    "posted_date": "2025-05-11T00:00:00",
+    "status": "active",
+    "source": "linkedin",
+    "external_url": "https://example.com/jobs/6",
+    "created_at": "2026-05-29T07:13:21.470433",
+    "updated_at": "2026-05-29T07:13:21.470434"
+  },
+  {
+    "job_id": 7,
+    "title": "ML Engineer",
+    "company": "Enterprise Solutions",
+    "location": "Atlanta, GA",
+    "employment_type": "full-time",
+    "experience_level": "executive",
+    "salary_min": 120000.0,
+    "salary_max": 140000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Agile",
+      "Data Engineering",
+      "Rust",
+      "AWS",
+      "Data Science",
+      "SQL",
+      "Terraform",
+      "Azure"
+    ],
+    "preferred_skills": [
+      "Java",
+      "Kubernetes",
+      "MySQL",
+      "PHP"
+    ],
+    "posted_date": "2024-07-30T00:00:00",
+    "status": "closed",
+    "source": "indeed",
+    "external_url": "https://example.com/jobs/7",
+    "created_at": "2026-05-29T07:13:21.470465",
+    "updated_at": "2026-05-29T07:13:21.470467"
+  },
+  {
+    "job_id": 8,
+    "title": "Software Engineer",
+    "company": "Enterprise Solutions",
+    "location": "Miami, FL",
+    "employment_type": "full-time",
+    "experience_level": "executive",
+    "salary_min": 120000.0,
+    "salary_max": 160000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Elasticsearch",
+      "React",
+      "Data Science"
+    ],
+    "preferred_skills": [
+      "AWS",
+      "SQL"
+    ],
+    "posted_date": "2024-09-24T00:00:00",
+    "status": "active",
+    "source": "referral",
+    "external_url": "https://example.com/jobs/8",
+    "created_at": "2026-05-29T07:13:21.470489",
+    "updated_at": "2026-05-29T07:13:21.470491"
+  },
+  {
+    "job_id": 9,
+    "title": "Director of Engineering",
+    "company": "NextGen Labs",
+    "location": "New York, NY",
+    "employment_type": "contract",
+    "experience_level": "executive",
+    "salary_min": 80000.0,
+    "salary_max": 120000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "AWS",
+      "PostgreSQL",
+      "SQL"
+    ],
+    "preferred_skills": [
+      "ETL",
+      "C++"
+    ],
+    "posted_date": "2024-12-29T00:00:00",
+    "status": "active",
+    "source": "internal",
+    "external_url": "https://example.com/jobs/9",
+    "created_at": "2026-05-29T07:13:21.470512",
+    "updated_at": "2026-05-29T07:13:21.470513"
+  },
+  {
+    "job_id": 10,
+    "title": "Full Stack Engineer",
+    "company": "ByteWorks",
+    "location": "Atlanta, GA",
+    "employment_type": "part-time",
+    "experience_level": "mid",
+    "salary_min": 160000.0,
+    "salary_max": 200000.0,
+    "description": "Exciting opportunity for a mid level engineer...",
+    "required_skills": [
+      "Agile",
+      "FastAPI",
+      "Leadership",
+      "Communication",
+      "Angular"
+    ],
+    "preferred_skills": [
+      "Azure",
+      "JavaScript"
+    ],
+    "posted_date": "2025-05-01T00:00:00",
+    "status": "active",
+    "source": "internal",
+    "external_url": "https://example.com/jobs/10",
+    "created_at": "2026-05-29T07:13:21.470536",
+    "updated_at": "2026-05-29T07:13:21.470538"
+  },
+  {
+    "job_id": 11,
+    "title": "DevOps Engineer",
+    "company": "CyberSecure",
+    "location": "Los Angeles, CA",
+    "employment_type": "part-time",
+    "experience_level": "mid",
+    "salary_min": 140000.0,
+    "salary_max": 200000.0,
+    "description": "Exciting opportunity for a mid level engineer...",
+    "required_skills": [
+      "C++",
+      "GCP",
+      "PostgreSQL"
+    ],
+    "preferred_skills": [
+      "Ruby",
+      "Redis",
+      "Agile",
+      "CI/CD"
+    ],
+    "posted_date": "2026-02-26T00:00:00",
+    "status": "on-hold",
+    "source": "referral",
+    "external_url": "https://example.com/jobs/11",
+    "created_at": "2026-05-29T07:13:21.470558",
+    "updated_at": "2026-05-29T07:13:21.470560"
+  },
+  {
+    "job_id": 12,
+    "title": "Frontend Engineer",
+    "company": "HealthTech Inc",
+    "location": "Los Angeles, CA",
+    "employment_type": "part-time",
+    "experience_level": "mid",
+    "salary_min": 120000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a mid level engineer...",
+    "required_skills": [
+      "Azure",
+      "Agile",
+      "GCP",
+      "SQL",
+      "Scrum",
+      "Java",
+      "Communication"
+    ],
+    "preferred_skills": [
+      "Rust",
+      "Python",
+      "DevOps"
+    ],
+    "posted_date": "2026-03-29T00:00:00",
+    "status": "active",
+    "source": "internal",
+    "external_url": "https://example.com/jobs/12",
+    "created_at": "2026-05-29T07:13:21.470587",
+    "updated_at": "2026-05-29T07:13:21.470589"
+  },
+  {
+    "job_id": 13,
+    "title": "Engineering Manager",
+    "company": "CloudNine Systems",
+    "location": "Portland, OR",
+    "employment_type": "part-time",
+    "experience_level": "executive",
+    "salary_min": 160000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Communication",
+      "Python",
+      "CI/CD"
+    ],
+    "preferred_skills": [
+      "ETL",
+      "PHP",
+      "MongoDB",
+      "Agile"
+    ],
+    "posted_date": "2025-08-18T00:00:00",
+    "status": "active",
+    "source": "indeed",
+    "external_url": "https://example.com/jobs/13",
+    "created_at": "2026-05-29T07:13:21.470621",
+    "updated_at": "2026-05-29T07:13:21.470623"
+  },
+  {
+    "job_id": 14,
+    "title": "Frontend Engineer",
+    "company": "Quantum Computing Co",
+    "location": "Seattle, WA",
+    "employment_type": "contract",
+    "experience_level": "executive",
+    "salary_min": 160000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "C++",
+      "PHP",
+      "Data Engineering",
+      "Communication",
+      "Leadership",
+      "Elasticsearch",
+      "Java"
+    ],
+    "preferred_skills": [
+      "Docker",
+      "React",
+      "Go",
+      "JavaScript"
+    ],
+    "posted_date": "2025-03-11T00:00:00",
+    "status": "active",
+    "source": "referral",
+    "external_url": "https://example.com/jobs/14",
+    "created_at": "2026-05-29T07:13:21.470648",
+    "updated_at": "2026-05-29T07:13:21.470649"
+  },
+  {
+    "job_id": 15,
+    "title": "Data Scientist",
+    "company": "DataFlow Inc",
+    "location": "Portland, OR",
+    "employment_type": "full-time",
+    "experience_level": "mid",
+    "salary_min": 120000.0,
+    "salary_max": 160000.0,
+    "description": "Exciting opportunity for a mid level engineer...",
+    "required_skills": [
+      "Ruby",
+      "Docker",
+      "Angular",
+      "AWS",
+      "Kubernetes"
+    ],
+    "preferred_skills": [
+      "Django",
+      "GCP",
+      "Terraform",
+      "SQL"
+    ],
+    "posted_date": "2024-05-30T00:00:00",
+    "status": "closed",
+    "source": "linkedin",
+    "external_url": "https://example.com/jobs/15",
+    "created_at": "2026-05-29T07:13:21.470671",
+    "updated_at": "2026-05-29T07:13:21.470673"
+  },
+  {
+    "job_id": 16,
+    "title": "Backend Engineer",
+    "company": "CyberSecure",
+    "location": "Remote",
+    "employment_type": "full-time",
+    "experience_level": "executive",
+    "salary_min": 120000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Rust",
+      "PHP",
+      "Docker",
+      "Agile",
+      "Elasticsearch",
+      "Node.js",
+      "Python",
+      "Django"
+    ],
+    "preferred_skills": [
+      "MongoDB",
+      "PostgreSQL",
+      "Machine Learning",
+      "Scrum"
+    ],
+    "posted_date": "2026-01-22T00:00:00",
+    "status": "active",
+    "source": "referral",
+    "external_url": "https://example.com/jobs/16",
+    "created_at": "2026-05-29T07:13:21.470697",
+    "updated_at": "2026-05-29T07:13:21.470698"
+  },
+  {
+    "job_id": 17,
+    "title": "Frontend Engineer",
+    "company": "DataFlow Inc",
+    "location": "Portland, OR",
+    "employment_type": "full-time",
+    "experience_level": "mid",
+    "salary_min": 120000.0,
+    "salary_max": 160000.0,
+    "description": "Exciting opportunity for a mid level engineer...",
+    "required_skills": [
+      "SQL",
+      "DevOps",
+      "Ruby",
+      "Node.js",
+      "Leadership",
+      "Terraform",
+      "C++",
+      "Rust"
+    ],
+    "preferred_skills": [
+      "Angular",
+      "Vue",
+      "Data Engineering",
+      "React"
+    ],
+    "posted_date": "2025-04-26T00:00:00",
+    "status": "active",
+    "source": "internal",
+    "external_url": "https://example.com/jobs/17",
+    "created_at": "2026-05-29T07:13:21.470722",
+    "updated_at": "2026-05-29T07:13:21.470724"
+  },
+  {
+    "job_id": 18,
+    "title": "Engineering Manager",
+    "company": "Quantum Computing Co",
+    "location": "San Diego, CA",
+    "employment_type": "full-time",
+    "experience_level": "mid",
+    "salary_min": 120000.0,
+    "salary_max": 180000.0,
+    "description": "Exciting opportunity for a mid level engineer...",
+    "required_skills": [
+      "Agile",
+      "Docker",
+      "Flask",
+      "Elasticsearch",
+      "PostgreSQL",
+      "Scrum",
+      "ETL"
+    ],
+    "preferred_skills": [
+      "CI/CD",
+      "Redis",
+      "Data Science",
+      "MongoDB"
+    ],
+    "posted_date": "2024-07-01T00:00:00",
+    "status": "active",
+    "source": "referral",
+    "external_url": "https://example.com/jobs/18",
+    "created_at": "2026-05-29T07:13:21.470747",
+    "updated_at": "2026-05-29T07:13:21.470748"
+  },
+  {
+    "job_id": 19,
+    "title": "Director of Engineering",
+    "company": "InnovateTech",
+    "location": "Portland, OR",
+    "employment_type": "contract",
+    "experience_level": "executive",
+    "salary_min": 120000.0,
+    "salary_max": 140000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Scrum",
+      "PostgreSQL",
+      "Data Engineering"
+    ],
+    "preferred_skills": [
+      "Angular",
+      "MongoDB",
+      "Data Science",
+      "SQL"
+    ],
+    "posted_date": "2026-02-17T00:00:00",
+    "status": "closed",
+    "source": "indeed",
+    "external_url": "https://example.com/jobs/19",
+    "created_at": "2026-05-29T07:13:21.470769",
+    "updated_at": "2026-05-29T07:13:21.470771"
+  },
+  {
+    "job_id": 20,
+    "title": "Product Manager",
+    "company": "NextGen Labs",
+    "location": "Boston, MA",
+    "employment_type": "part-time",
+    "experience_level": "executive",
+    "salary_min": 140000.0,
+    "salary_max": 200000.0,
+    "description": "Exciting opportunity for a executive level engineer...",
+    "required_skills": [
+      "Python",
+      "Kubernetes",
+      "Data Science"
+    ],
+    "preferred_skills": [
+      "GCP",
+      "JavaScript",
+      "CI/CD",
+      "Node.js"
+    ],
+    "posted_date": "2026-05-08T00:00:00",
+    "status": "active",
+    "source": "indeed",
+    "external_url": "https://example.com/jobs/20",
+    "created_at": "2026-05-29T07:13:21.470790",
+    "updated_at": "2026-05-29T07:13:21.470792"
+  }
+]
